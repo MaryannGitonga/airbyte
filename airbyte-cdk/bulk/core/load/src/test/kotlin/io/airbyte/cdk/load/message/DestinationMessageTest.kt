@@ -60,7 +60,7 @@ class DestinationMessageTest {
         message: AirbyteMessage,
     ): DestinationMessage {
         val serialized = message.serializeToString()
-        return factory.fromAirbyteMessage(
+        return factory.fromAirbyteProtocolMessage(
             // We have to set some stuff in additionalProperties, so force the protocol model back
             // to a serialized representation and back.
             // This avoids issues with e.g. `additionalProperties.put("foo", 12L)`:

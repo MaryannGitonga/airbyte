@@ -246,16 +246,16 @@ class DestinationRecordRawTest {
         val enrichedRecord = rawRecord.asEnrichedDestinationRecordAirbyteValue()
 
         // Verify meta changes are preserved
-        assertNotNull(enrichedRecord.meta)
-        assertEquals(1, enrichedRecord.meta!!.changes.size)
-        assertEquals("some_field", enrichedRecord.meta!!.changes[0].field)
+        assertNotNull(enrichedRecord.sourceMeta)
+        assertEquals(1, enrichedRecord.sourceMeta!!.changes.size)
+        assertEquals("some_field", enrichedRecord.sourceMeta!!.changes[0].field)
         assertEquals(
             AirbyteRecordMessageMetaChange.Change.TRUNCATED,
-            enrichedRecord.meta!!.changes[0].change
+            enrichedRecord.sourceMeta!!.changes[0].change
         )
         assertEquals(
             AirbyteRecordMessageMetaChange.Reason.DESTINATION_RECORD_SIZE_LIMITATION,
-            enrichedRecord.meta!!.changes[0].reason
+            enrichedRecord.sourceMeta!!.changes[0].reason
         )
     }
 

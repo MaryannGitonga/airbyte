@@ -5,6 +5,7 @@
 package io.airbyte.cdk.load.command
 
 import io.airbyte.cdk.load.data.AirbyteType
+import io.airbyte.cdk.load.data.ObjectType
 import io.airbyte.cdk.load.data.json.AirbyteTypeToJsonSchema
 import io.airbyte.cdk.load.data.json.JsonSchemaToAirbyteType
 import io.airbyte.cdk.load.message.DestinationRecord
@@ -44,6 +45,34 @@ data class DestinationStream(
 
         fun toPrettyString(): String {
             return if (namespace == null) name else "$namespace.$name"
+        }
+    }
+
+    data class AirbyteProxyField(val index: Int, val name: String, val type: AirbyteType)
+
+    /**
+     * Provides the schema in a stable order, which can be used to query the AirbyteValueProxy
+     * representation of the data provided by DestinationRecordRaw. This can also be used to build a
+     * header/ordered schema as needed.
+     *
+     * Connector Devs who build against this are guaranteed to get the best possible performance for
+     * sockets, possibly at the expense of performance on non-socket syncs.
+     */
+    val schemaInAirbyteProxyOrder: Array<AirbyteProxyField> by lazy {
+        if (schema is ObjectType) {
+            schema.properties
+                .toList()
+                .sortedBy { (name, _) -> name }
+                .mapIndexed { index, namedType ->
+                    AirbyteProxyField(
+                        index = index,
+                        name = namedType.first,
+                        type = namedType.second.type
+                    )
+                }
+                .toTypedArray()
+        } else {
+            emptyArray()
         }
     }
 
