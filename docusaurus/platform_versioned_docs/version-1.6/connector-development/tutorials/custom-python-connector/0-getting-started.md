@@ -81,7 +81,7 @@ filter on.
 
 ## Authentication
 
-The [authentication section](https://api.surveymonkey.com/v3/docs?shell#authentication describes how
+The [authentication section](https://api.surveymonkey.com/v3/docs?shell#authentication) describes how
 to authenticate to the API. Follow the instructions to obtain an access key. We'll then be able to
 authenticate by passing a HTTP header in the format `Authorization: bearer YOUR_ACCESS_TOKEN`.
 
